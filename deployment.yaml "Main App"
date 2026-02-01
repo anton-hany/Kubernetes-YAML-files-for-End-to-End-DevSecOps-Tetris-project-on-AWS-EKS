@@ -29,12 +29,6 @@ spec:
             - name: http
               containerPort: 80
 
-          securityContext:
-            runAsNonRoot: true
-            runAsUser: 1000
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-
           resources:
             requests:
               cpu: "100m"
