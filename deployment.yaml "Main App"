@@ -5,8 +5,11 @@ metadata:
   namespace: tetris
   labels:
     app: tetris
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   replicas: 3
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
       app: tetris
@@ -15,12 +18,23 @@ spec:
       labels:
         app: tetris
     spec:
+      serviceAccountName: tetris-sa
+      securityContext:
+        fsGroup: 2000
       containers:
         - name: tetris
-          image: 944880694929.dkr.ecr.us-east-1.amazonaws.com/tetris-game:6 
+          image: 944880694929.dkr.ecr.us-east-1.amazonaws.com/tetris-game:6
           imagePullPolicy: Always
           ports:
-            - containerPort: 80
+            - name: http
+              containerPort: 80
+
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+
           resources:
             requests:
               cpu: "100m"
@@ -28,3 +42,17 @@ spec:
             limits:
               cpu: "500m"
               memory: "256Mi"
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 20
+            periodSeconds: 10
