@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: tetris
-          image: <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/tetris-app:latest
+          image: 944880694929.dkr.ecr.us-east-1.amazonaws.com/tetris-game:6 
           imagePullPolicy: Always
           ports:
             - containerPort: 80
