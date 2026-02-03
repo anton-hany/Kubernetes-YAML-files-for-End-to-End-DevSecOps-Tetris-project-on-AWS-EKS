@@ -5,8 +5,6 @@ metadata:
   namespace: tetris
   labels:
     app: tetris
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
 spec:
   replicas: 3
   revisionHistoryLimit: 3
